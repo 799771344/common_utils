@@ -1,0 +1,11 @@
+Metadata-Version: 2.1
+Name: common-utils
+Version: 0.1.0
+Summary: 这是一个python公共工具包
+Home-page: https://github.com/799771344/common_utils
+Author: WEN JIE
+Author-email: 799771344@qq.com
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Provides-Extra: dev
+Provides-Extra: test
