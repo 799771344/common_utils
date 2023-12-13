@@ -2,7 +2,7 @@ import os
 
 import pandas as pd
 
-from utils.file_utils import ExcelUtils, CsvFileUtils, FileUtils
+from common_utils.file_utils import ExcelUtils, CsvFileUtils, FileUtils
 
 
 def test_file_utils():

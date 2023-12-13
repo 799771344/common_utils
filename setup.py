@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='common_utils',  # 包名
-    version='0.1.0',  # 包的版本
+    version='0.1.1',  # 包的版本
     description='这是一个python公共工具包',  # 简短描述
     long_description=open('README.md').read(),  # 长描述，通常从README文件读取
     long_description_content_type='text/markdown',  # 长描述的内容类型
