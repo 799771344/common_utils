@@ -11,7 +11,12 @@ setup(
     url='https://github.com/799771344/common_utils',  # 项目主页，通常是GitHub仓库的URL
     packages=find_packages(exclude=('tests', 'docs')),  # 项目中要包括的包，默认包括所有 src 中的包
     install_requires=[  # 运行时依赖列表
-        'pandas'
+        'pandas',
+        "httpx",
+        "aiohttp",
+        "requests",
+        "aiofiles",
+        "openpyxl"
     ],
     extras_require={  # 额外的依赖列表
         'dev': ['check-manifest'],
