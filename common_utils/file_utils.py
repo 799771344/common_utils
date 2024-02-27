@@ -204,6 +204,10 @@ class ExcelUtils:
         :param file_path: Excel文件的路径。
         """
         self.file_path = file_path
+        # 确保文件存在，如果不存在则创建一个新的Excel文件
+        if not os.path.exists(self.file_path):
+            with pd.ExcelWriter(self.file_path, engine='openpyxl') as writer:
+                writer.save()
 
     def read_sheet(self, sheet_name=0):
         """
@@ -221,8 +225,15 @@ class ExcelUtils:
         :param data: 要写入的DataFrame数据。
         :param sheet_name: 要写入的sheet名称，默认为'Sheet1'。
         """
-        with pd.ExcelWriter(self.file_path, engine='openpyxl', mode='a', if_sheet_exists='new') as writer:
-            data.to_excel(writer, sheet_name=sheet_name, index=False)
+        # 首先检查sheet是否存在，如果不存在则创建
+        sheet_exists = any(sheet_name == name for name in self.get_sheet_names())
+        if not sheet_exists:
+            # 创建新sheet并写入数据
+            data.to_excel(self.file_path, sheet_name=sheet_name, index=False)
+        else:
+            # 如果sheet已存在，使用append模式
+            with pd.ExcelWriter(self.file_path, engine='openpyxl', mode='a', if_sheet_exists='append') as writer:
+                data.to_excel(writer, sheet_name=sheet_name, index=False)
 
     def append_data(self, data, sheet_name='Sheet1'):
         """
@@ -231,18 +242,20 @@ class ExcelUtils:
         :param data: 要追加的DataFrame数据。
         :param sheet_name: 要追加数据的sheet名称，默认为'Sheet1'。
         """
-        with pd.ExcelWriter(self.file_path, engine='openpyxl', mode='a', if_sheet_exists='overlay') as writer:
-            # 尝试读取现有sheet的数据
-            try:
+        # 检查sheet是否存在，如果不存在则创建
+        sheet_exists = any(sheet_name == name for name in self.get_sheet_names())
+        if not sheet_exists:
+            # 创建新sheet并写入数据
+            data.to_excel(self.file_path, sheet_name=sheet_name, index=False)
+        else:
+            # 如果sheet已存在，追加数据
+            with pd.ExcelWriter(self.file_path, engine='openpyxl', mode='a', if_sheet_exists='overlay') as writer:
+                # 读取现有sheet的数据
                 orig_data = pd.read_excel(self.file_path, sheet_name=sheet_name)
-            except ValueError:  # 如果sheet不存在，则创建一个新的空的DataFrame
-                orig_data = pd.DataFrame()
-
-            # 将新数据与原有数据合并
-            updated_data = pd.concat([orig_data, data], ignore_index=True)
-
-            # 将合并后的数据写回Excel
-            updated_data.to_excel(writer, sheet_name=sheet_name, index=False)
+                # 将新数据与原有数据合并
+                updated_data = pd.concat([orig_data, data], ignore_index=True)
+                # 将合并后的数据写回Excel
+                updated_data.to_excel(writer, sheet_name=sheet_name, index=False)
 
     def get_sheet_names(self):
         """

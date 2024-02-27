@@ -138,3 +138,5 @@ def test_excel_utils():
     # 获取Excel文件的所有sheet名称
     sheet_names = excel.get_sheet_names()
     print(sheet_names)
+
+test_excel_utils()

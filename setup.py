@@ -16,7 +16,12 @@ setup(
         "aiohttp",
         "requests",
         "aiofiles",
-        "openpyxl"
+        "openpyxl",
+        "redis",
+        "aiologger",
+        "aiomysql",
+        "pymongo",
+        "aioredis"
     ],
     extras_require={  # 额外的依赖列表
         'dev': ['check-manifest'],
